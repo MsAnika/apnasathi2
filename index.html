@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#075e54">
+<title>Namaste AI Assistant</title>
+
+<style>
+:root {
+  --green: #075e54;
+  --light-green: #e2f5e9;
+  --blue: #164e9b;
+  --orange: #a94800;
+  --background: #f7f9fc;
+  --text: #17202a;
+  --white: #ffffff;
+  --border: #c5ced8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  color: var(--text);
+  background: var(--background);
+}
+
+header {
+  background: var(--green);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(28px, 5vw, 42px);
+}
+
+header p {
+  margin: 6px 0;
+  font-size: 20px;
+}
+
+#clock {
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+main {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 22px;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+h2 {
+  font-size: clamp(28px, 4vw, 36px);
+  margin: 12px 0 20px;
+}
+
+h3 {
+  font-size: 25px;
+}
+
+p, label {
+  line-height: 1.5;
+}
+
+.home-welcome {
+  text-align: center;
+  padding: 18px 0;
+}
+
+.namaste {
+  font-size: clamp(42px, 9vw, 68px);
+  margin: 10px 0;
+}
+
+.home-welcome p {
+  font-size: 25px;
+}
+
+.feature {
+  width: 100%;
+  min-height: 118px;
+  margin: 13px 0;
+  padding: 20px;
+  border: 3px solid transparent;
+  border-radius: 20px;
+  text-align: left;
+  color: white;
+  font-size: clamp(23px, 4vw, 30px);
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.feature span {
+  font-size: 43px;
+  flex-shrink: 0;
+}
+
+.feature small {
+  display: block;
+  font-size: 18px;
+  font-weight: normal;
+  margin-top: 8px;
+}
+
+.medicine-feature {
+  background: var(--green);
+}
+
+.family-feature {
+  background: var(--blue);
+}
+
+.question-feature {
+  background: var(--orange);
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 4px solid #f4b400;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.back-button,
+.action-button {
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  padding: 15px 20px;
+  min-height: 58px;
+  font-weight: bold;
+  background: white;
+  color: var(--green);
+  margin: 8px 5px 8px 0;
+}
+
+.action-button.primary {
+  color: white;
+  background: var(--green);
+}
+
+.action-button.blue {
+  color: white;
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.action-button.orange {
+  color: white;
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+.action-button.danger {
+  color: white;
+  background: #a61b1b;
+  border-color: #a61b1b;
+}
+
+.field {
+  margin: 20px 0;
+}
+
+.field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+input, select, textarea {
+  width: 100%;
+  min-height: 58px;
+  padding: 14px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  color: var(--text);
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.panel {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  margin: 18px 0;
+}
+
+.item {
+  padding: 18px 0;
+  border-bottom: 2px solid #e0e5eb;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item strong {
+  font-size: 23px;
+}
+
+.item p {
+  margin: 8px 0;
+}
+
+.status {
+  padding: 15px;
+  border-radius: 12px;
+  background: var(--light-green);
+  margin: 15px 0;
+  overflow-wrap: anywhere;
+}
+
+.answer {
+  min-height: 100px;
+  font-size: 23px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.muted {
+  color: #485461;
+  font-size: 17px;
+}
+
+.contact-button {
+  width: 100%;
+  min-height: 82px;
+  padding: 16px;
+  margin: 10px 0;
+  border: 2px solid var(--blue);
+  border-radius: 15px;
+  background: white;
+  color: var(--blue);
+  text-align: left;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.contact-button small {
+  display: block;
+  font-size: 18px;
+  margin-top: 6px;
+}
+
+.emergency {
+  display: block;
+  width: 100%;
+  background: #a61b1b;
+  color: white;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 23px;
+  border-radius: 16px;
+  text-decoration: none;
+  margin: 20px 0;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  color: #485461;
+  font-size: 16px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 14px;
+  }
+
+  .feature {
+    padding: 17px;
+    gap: 12px;
+  }
+
+  .feature span {
+    font-size: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Namaste AI Assistant</h1>
+  <p>Your friendly digital helper</p>
+  <div id="clock" aria-live="off">Loading time...</div>
+</header>
+
+<main>
+
+  <!-- HOME SCREEN -->
+  <section id="home" class="screen active">
+    <div class="home-welcome">
+      <div class="namaste" aria-hidden="true">🙏</div>
+      <h2>Namaste!</h2>
+      <p>How can I help you today?</p>
+      <p class="muted">Choose one of the three large buttons below.</p>
+    </div>
+
+    <button class="feature medicine-feature"
+            onclick="showScreen('medicine')">
+      <span aria-hidden="true">💊</span>
+      <div>
+        Medicine Reminder
+        <small>Remember your medicines on time</small>
+      </div>
+    </button>
+
+    <button class="feature family-feature"
+            onclick="showScreen('family')">
+      <span aria-hidden="true">📞</span>
+      <div>
+        Call Family
+        <small>Connect with someone you love</small>
+      </div>
+    </button>
+
+    <button class="feature question-feature"
+            onclick="showScreen('assistant')">
+      <span aria-hidden="true">🎙️</span>
+      <div>
+        Ask a Question
+        <small>Speak or type your question</small>
+      </div>
+    </button>
+
+    <div class="panel">
+      <h3>Today's Date</h3>
+      <p id="homeDate" aria-live="off">Loading date...</p>
+      <button class="action-button primary"
+              onclick="speak('Namaste! I am here to help you.')">
+        🔊 Hear Welcome
+      </button>
+    </div>
+  </section>
+
+  <!-- MEDICINE REMINDER SCREEN -->
+  <section id="medicine" class="screen">
+    <button class="back-button" onclick="showScreen('home')">
+      ← Back to Home
+    </button>
+
+    <h2>💊 Medicine Reminder</h2>
+    <p>Add your medicine details below. The assistant can remind you
+       when it is time.</p>
+
+    <div class="panel">
+      <form id="medicineForm">
+        <div class="field">
+          <label for="medName">Medicine Name</label>
+          <input id="medName" required maxlength="100"
+                 placeholder="Example: Medicine A">
+        </div>
+
+        <div class="field">
+          <label for="medInstructions">Instructions</label>
+          <input id="medInstructions" maxlength="200"
+                 placeholder="Example: Follow the doctor's instructions">
+        </div>
+
+        <div class="field">
+          <label for="medTime">Reminder Time</label>
+          <input id="medTime" type="time" required>
+        </div>
+
+        <button class="action-button primary" type="submit">
+          + Add Reminder
+        </button>
+      </form>
+    </div>
+
+    <div class="status" role="status" id="medicineStatus">
+      Your medicine reminders will appear here.
+    </div>
+
+    <h3>My Medicines</h3>
+    <div id="medicineList" class="panel">
+      No reminders added yet.
+    </div>
+
+    <p class="muted">
+      Important: Keep this page open for reminders. Browser notifications
+      require permission and may not work when the page is closed.
+      This assistant does not decide which medicines or doses you need.
+      Always follow your healthcare professional's instructions.
+    </p>
+  </section>
+
+  <!-- FAMILY SCREEN -->
+  <section id="family" class="screen">
+    <button class="back-button" onclick="showScreen('home')">
+      ← Back to Home
+    </button>
+
+    <h2>📞 Call Family</h2>
+    <p>Save your family's phone numbers for quick access.</p>
+
+    <div class="panel">
+      <form id="contactForm">
+        <div class="field">
+          <label for="contactName">Family Member's Name</label>
+          <input id="contactName" required maxlength="80"
+                 placeholder="Example: My Son">
+        </div>
+
+        <div class="field">
+          <label for="contactPhone">Phone Number</label>
+          <input id="contactPhone" required type="tel"
+                 maxlength="25" placeholder="Enter phone number">
+        </div>
+
+        <button class="action-button blue" type="submit">
+          + Save Family Member
+        </button>
+      </form>
+    </div>
+
+    <div id="contactList" class="panel">
+      No family members saved yet.
+    </div>
+
+    <a class="emergency" href="tel:112">
+      🚨 Call Emergency Services — 112
+    </a>
+
+    <p class="muted">
+      Emergency calling depends on your device, network and location.
+      The emergency button opens your device's calling interface;
+      it does not automatically place a call.
+    </p>
+  </section>
+
+  <!-- ASK A QUESTION SCREEN -->
+  <section id="assistant" class="screen">
+    <button class="back-button" onclick="showScreen('home')">
+      ← Back to Home
+    </button>
+
+    <h2>🎙️ Ask Your AI Assistant</h2>
+    <p>You can type or speak. Try asking a simple question.</p>
+
+    <div class="panel">
+      <div class="field">
+        <label for="question">Type your question here</label>
+        <textarea id="question"
+                  placeholder="Example: What is 25 multiplied by 4?"></textarea>
+      </div>
+
+      <button class="action-button primary" id="askButton"
+              onclick="askQuestion()">
+        Ask Question
+      </button>
+
+      <button class="action-button" id="micButton"
+              onclick="startListening()">
+        🎙️ Speak Now
+      </button>
+
+      <button class="action-button" onclick="clearQuestion()">
+        Clear
+      </button>
+    </div>
+
+    <div class="panel">
+      <h3>Assistant's Answer</h3>
+      <div id="answer" class="answer" role="status" aria-live="polite">
+        Namaste! Ask me about maths, the time, the date, or a simple
+        general question.
+      </div>
+
+      <button class="action-button primary"
+              onclick="speakCurrentAnswer()">
+        🔊 Read Answer Aloud
+      </button>
+
+      <button class="action-button" onclick="stopSpeaking()">
+        ⏹️ Stop Speaking
+      </button>
+    </div>
+
+    <div class="panel">
+      <h3>Try Asking</h3>
+      <button class="action-button"
+              onclick="tryQuestion('What is 125 plus 75?')">
+        What is 125 plus 75?
+      </button>
+      <button class="action-button"
+              onclick="tryQuestion('What is 144 divided by 12?')">
+        What is 144 divided by 12?
+      </button>
+      <button class="action-button"
+              onclick="tryQuestion('What time is it now?')">
+        What time is it now?
+      </button>
+      <button class="action-button"
+              onclick="tryQuestion('What is today's date?')">
+        What is today's date?
+      </button>
+      <button class="action-button"
+              onclick="tryQuestion('What is photosynthesis?')">
+        What is photosynthesis?
+      </button>
+    </div>
+
+    <p class="muted">
+      Voice input requires a supported browser and microphone permission.
+      This version answers built-in questions locally. Connect a secure
+      AI backend for broader, open-ended answers.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  Namaste AI Assistant · Designed with care for elderly users
+  <p>Your privacy matters. Only save contact details with permission.</p>
+</footer>
+
+<script>
+"use strict";
+
+/* =========================================
+   BASIC SCREEN NAVIGATION
+========================================= */
+
+function showScreen(screenId) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  const selected = document.getElementById(screenId);
+
+  if (selected) {
+    selected.classList.add("active");
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+}
+
+/* =========================================
+   LIVE TIME AND DATE
+========================================= */
+
+function updateClock() {
+  const now = new Date();
+
+  document.getElementById("clock").textContent =
+    now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
+
+  document.getElementById("homeDate").textContent =
+    now.toLocaleDateString([], {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+/* =========================================
+   SAFE LOCAL STORAGE
+   Data remains on this browser/device.
+========================================= */
+
+function readSavedData(key) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : [];
+  } catch (error) {
+    console.warn("Saved data could not be read.", error);
+    return [];
+  }
+}
+
+function saveData(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch (error) {
+    console.warn("Data could not be saved.", error);
+    alert("Your browser could not save this information.");
+    return false;
+  }
+}
+
+let medicines = readSavedData("namaste_medicines");
+let contacts = readSavedData("namaste_contacts");
+
+function makeId() {
+  return Date.now().toString(36) +
+         Math.random().toString(36).slice(2, 8);
+}
+
+/* =========================================
+   SPEECH OUTPUT
+========================================= */
+
+function speak(message) {
+  if (!("speechSynthesis" in window)) {
+    alert(message);
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(message);
+  utterance.lang = "en-IN";
+  utterance.rate = 0.85;
+  utterance.pitch = 1;
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function speakCurrentAnswer() {
+  const answer = document.getElementById("answer").textContent.trim();
+
+  if (answer) {
+    speak(answer);
+  }
+}
+
+function stopSpeaking() {
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+}
+
+/* =========================================
+   MEDICINE REMINDERS
+========================================= */
+
+const medicineForm = document.getElementById("medicineForm");
+
+medicineForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("medName").value.trim();
+  const instructions =
+    document.getElementById("medInstructions").value.trim();
+  const time = document.getElementById("medTime").value;
+
+  if (!name || !time) {
+    alert("Please enter the medicine name and reminder time.");
+    return;
+  }
+
+  medicines.push({
+    id: makeId(),
+    name,
+    instructions,
+    time,
+    lastAlertDate: ""
+  });
+
+  if (!saveData("namaste_medicines", medicines)) {
+    medicines.pop();
+    return;
+  }
+
+  medicineForm.reset();
+  renderMedicines();
+
+  document.getElementById("medicineStatus").textContent =
+    "Reminder saved for " + name + " at " + time + ".";
+
+  speak("Your medicine reminder has been saved.");
+});
+
+function renderMedicines() {
+  const list = document.getElementById("medicineList");
+  list.replaceChildren();
+
+  if (medicines.length === 0) {
+    list.textContent = "No reminders added yet.";
+    return;
+  }
+
+  medicines.forEach(medicine => {
+    const item = document.createElement("div");
+    item.className = "item";
+
+    const title = document.createElement("strong");
+    title.textContent = "💊 " + medicine.name;
+
+    const time = document.createElement("p");
+    time.textContent = "Reminder: " + medicine.time;
+
+    const instructions = document.createElement("p");
+    instructions.textContent = medicine.instructions ||
+      "Follow your healthcare professional's instructions.";
+
+    const removeButton = document.createElement("button");
+    removeButton.className = "action-button danger";
+    removeButton.textContent = "Remove Reminder";
+
+    removeButton.addEventListener("click", function() {
+      if (!confirm("Remove this medicine reminder?")) return;
+
+      medicines = medicines.filter(m => m.id !== medicine.id);
+
+      if (saveData("namaste_medicines", medicines)) {
+        renderMedicines();
+        document.getElementById("medicineStatus").textContent =
+          "Reminder removed.";
+      }
+    });
+
+    item.append(title, time, instructions, removeButton);
+    list.appendChild(item);
+  });
+}
+
+async function requestNotificationPermission() {
+  if ("Notification" in window &&
+      Notification.permission === "default") {
+    try {
+      await Notification.requestPermission();
+    } catch (error) {
+      console.warn("Notification permission was unavailable.");
+    }
+  }
+}
+
+function checkMedicineReminders() {
+  const now = new Date();
+  const today = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0")
+  ].join("-");
+
+  const currentTime = [
+    String(now.getHours()).padStart(2, "0"),
+    String(now.getMinutes()).padStart(2, "0")
+  ].join(":");
+
+  let changed = false;
+
+  medicines.forEach(medicine => {
+    if (medicine.time === currentTime &&
+        medicine.lastAlertDate !== today) {
+
+      medicine.lastAlertDate = today;
+      changed = true;
+
+      const message =
+        "Medicine reminder for " + medicine.name +
+        ". Please check your prescribed instructions.";
+
+      document.getElementById("medicineStatus").textContent = message;
+
+      speak(message);
+
+      if ("Notification" in window &&
+          Notification.permission === "granted") {
+        try {
+          new Notification("Medicine Reminder", {
+            body: message
+          });
+        } catch (error) {
+          console.warn("Notification could not be displayed.");
+        }
+      }
+
+      alert(message);
+    }
+  });
+
+  if (changed) {
+    saveData("namaste_medicines", medicines);
+  }
+}
+
+renderMedicines();
+
+document.getElementById("medicineStatus").textContent =
+  "Reminder system is ready. Keep the page open.";
+
+requestNotificationPermission();
+setInterval(checkMedicineReminders, 15000);
+
+/* =========================================
+   FAMILY CONTACTS
+========================================= */
+
+document.getElementById("contactForm")
+  .addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const name =
+      document.getElementById("contactName").value.trim();
+
+    const phone =
+      document.getElementById("contactPhone").value.trim();
+
+    if (!name || !phone) {
+      alert("Please enter a name and phone number.");
+      return;
+    }
+
+    if (!/^[+\d][\d\s().-]{4,23}$/.test(phone)) {
+      alert("Please enter a valid-looking phone number.");
+      return;
+    }
+
+    contacts.push({
+      id: makeId(),
+      name,
+      phone
+    });
+
+    if (!saveData("namaste_contacts", contacts)) {
+      contacts.pop();
+      return;
+    }
+
+    this.reset();
+    renderContacts();
+    speak("Family contact saved successfully.");
+  });
+
+function renderContacts() {
+  const list = document.getElementById("contactList");
+  list.replaceChildren();
+
+  if (contacts.length === 0) {
+    list.textContent = "No family members saved yet.";
+    return;
+  }
+
+  contacts.forEach(contact => {
+    const item = document.createElement("div");
+    item.className = "item";
+
+    const callLink = document.createElement("a");
+    callLink.className = "contact-button";
+    callLink.href = "tel:" + contact.phone.replace(/[^+\d]/g, "");
+    callLink.style.display = "block";
+    callLink.style.textDecoration = "none";
+
+    const name = document.createElement("span");
+    name.textContent = "📞 " + contact.name;
+
+    const number = document.createElement("small");
+    number.textContent = contact.phone;
+
+    callLink.append(name, number);
+
+    const removeButton = document.createElement("button");
+    removeButton.className = "action-button danger";
+    removeButton.textContent = "Remove Contact";
+
+    removeButton.addEventListener("click", function() {
+      if (!confirm("Remove this family contact?")) return;
+
+      contacts = contacts.filter(c => c.id !== contact.id);
+
+      if (saveData("namaste_contacts", contacts)) {
+        renderContacts();
+      }
+    });
+
+    item.append(callLink, removeButton);
+    list.appendChild(item);
+  });
+}
+
+renderContacts();
+
+/* =========================================
+   VOICE INPUT
+========================================= */
+
+let recognition = null;
+
+function startListening() {
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert(
+      "Voice input is not supported in this browser. " +
+      "Please type your question instead."
+    );
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = "en-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  const micButton = document.getElementById("micButton");
+  micButton.disabled = true;
+  micButton.textContent = "🎙️ Listening...";
+
+  recognition.onresult = function(event) {
+    document.getElementById("question").value =
+      event.results[0][0].transcript;
+
+    askQuestion();
+  };
+
+  recognition.onerror = function(event) {
+    document.getElementById("answer").textContent =
+      "I could not hear your question clearly. Please try again " +
+      "or type your question. Error: " + event.error;
+  };
+
+  recognition.onend = function() {
+    micButton.disabled = false;
+    micButton.textContent = "🎙️ Speak Now";
+  };
+
+  try {
+    recognition.start();
+  } catch (error) {
+    micButton.disabled = false;
+    micButton.textContent = "🎙️ Speak Now";
+    alert("Unable to start the microphone. Please try again.");
+  }
+}
+
+/* =========================================
+   QUESTION AND ANSWER ENGINE
+========================================= */
+
+function tryQuestion(question) {
+  document.getElementById("question").value = question;
+  askQuestion();
+}
+
+function clearQuestion() {
+  document.getElementById("question").value = "";
+  document.getElementById("answer").textContent =
+    "Your next question will appear here.";
+}
+
+function normalizeQuestion(question) {
+  return question
+    .toLowerCase()
+    .replace(/[₹$€£]/g, "")
+    .replace(/[?!,]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function formatNumber(number) {
+  return Number.isInteger(number)
+    ? String(number)
+    : String(Number(number.toPrecision(10)));
+}
+
+function calculateMath(question) {
+  let text = normalizeQuestion(question);
+
+  text = text
+    .replace(/what is|calculate|calculate the|please|tell me/gi, " ")
+    .replace(/the answer to/gi, " ")
+    .replace(/multiplied by|times|into/gi, "*")
+    .replace(/divided by/gi, "/")
+    .replace(/plus|added to|add/gi, "+")
+    .replace(/minus|subtract/gi, "-")
+    .replace(/x/g, "*")
+    .replace(/÷/g, "/")
+    .replace(/=/g, " ")
+    .trim();
+
+  const match = text.match(
+    /^(-?\d+(?:\.\d+)?)\s*([+\-/])\s(-?\d+(?:\.\d+)?)$/
+  );
+
+  if (!match) return null;
+
+  const a = Number(match[1]);
+  const operator = match[2];
+  const b = Number(match[3]);
+
+  let result;
+
+  switch (operator) {
+    case "+": result = a + b; break;
+    case "-": result = a - b; break;
+    case "*": result = a * b; break;
+    case "/":
+      if (b === 0) {
+        return "Division by zero is not possible.";
+      }
+      result = a / b;
+      break;
+    default: return null;
+  }
+
+  if (!Number.isFinite(result)) {
+    return "I could not calculate that result.";
+  }
+
+  return "The answer is " + formatNumber(result) + ".";
+}
+
+function getLocalAnswer(question) {
+  const q = normalizeQuestion(question);
+
+  if (!q) {
+    return "Please type or speak a question first.";
+  }
+
+  if (/\b(time|clock)\b/.test(q) &&
+      /\b(what|current|now|tell|time)\b/.test(q)) {
+    return "The current time is " +
+      new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      }) + ".";
+  }
+
+  if (/\b(date|today|day|month|year)\b/.test(q) &&
+      /\b(what|current|today|now|date|day)\b/.test(q)) {
+    return "Today's date is " +
+      new Date().toLocaleDateString("en-IN", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }) + ".";
+  }
+
+  if (/\b(hello|hi|namaste|good morning|good evening)\b/.test(q)) {
+    return "Namaste! It is lovely to talk to you. What would you like help with?";
+  }
+
+  if (/\bhow are you\b/.test(q)) {
+    return "I am ready to help you. How are you feeling today?";
+  }
+
+  if (/\b(your name|who are you)\b/.test(q)) {
+    return "I am Namaste AI Assistant, your friendly digital helper.";
+  }
+
+  if (/\b(thank you|thanks)\b/.test(q)) {
+    return "You are very welcome. I am happy to help.";
+  }
+
+  const mathAnswer = calculateMath(q);
+
+  if (mathAnswer !== null) {
+    return mathAnswer;
+  }
+
+  if (/\b(photosynthesis)\b/.test(q)) {
+    return "Photosynthesis is the process by which green plants use " +
+      "sunlight, water and carbon dioxide to make food. Oxygen is " +
+      "released during this process.";
+  }
+
+  if (/\b(capital of india)\b/.test(q)) {
+    return "The capital of India is New Delhi.";
+  }
+
+  if (/\b(planet|solar system)\b/.test(q) &&
+      /\b(largest|biggest)\b/.test(q)) {
+    return "Jupiter is the largest planet in our Solar System.";
+  }
+
+  if (/\b(emergency|ambulance|urgent help)\b/.test(q)) {
+    return "If you are in India and need urgent emergency assistance, " +
+      "call 112 if it is safe and possible to do so.";
+  }
+
+  return null;
+}
+
+/* =========================================
+   OPTIONAL REAL AI BACKEND
+========================================= */
+
+/*
+To enable open-ended AI answers:
+
+1. Create a secure backend on your server.
+2. Configure a POST endpoint at /api/ask.
+3. The endpoint should accept JSON: {"question":"..."}.
+4. It should return JSON: {"answer":"..."}.
+5. Keep your AI provider API key on the server, NEVER in this file.
+
+If the endpoint is unavailable, the app uses its local answers.
+*/
+
+async function askConnectedAI(question) {
+  const response = await fetch("/api/ask", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ question })
+  });
+
+  if (!response.ok) {
+    throw new Error("The AI service is unavailable.");
+  }
+
+  const data = await response.json();
+
+  if (typeof data.answer !== "string" ||
+      !data.answer.trim()) {
+    throw new Error("The AI service returned no answer.");
+  }
+
+  return data.answer.trim().slice(0, 5000);
+}
+
+async function askQuestion() {
+  const question = document.getElementById("question").value.trim();
+  const answerElement = document.getElementById("answer");
+  const askButton = document.getElementById("askButton");
+
+  if (!question) {
+    answerElement.textContent = "Please ask me a question first.";
+    return;
+  }
+
+  stopSpeaking();
+
+  // Answer calculations, time, date and built-in facts immediately.
+  const localAnswer = getLocalAnswer(question);
+
+  if (localAnswer !== null) {
+    answerElement.textContent = localAnswer;
+    speak(localAnswer);
+    return;
+  }
+
+  answerElement.textContent = "Let me think about your question...";
+  askButton.disabled = true;
+
+  try {
+    // This works only when a real backend has been configured.
+    const answer = await askConnectedAI(question);
+    answerElement.textContent = answer;
+    speak(answer);
+  } catch (error) {
+    answerElement.textContent =
+      "I do not know the answer to that question in offline mode. " +
+      "You can connect a real AI service to enable broader answers. " +
+      "For now, try asking about maths, the time, the date, or one " +
+      "of my built-in general knowledge questions.";
+  } finally {
+    askButton.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>
